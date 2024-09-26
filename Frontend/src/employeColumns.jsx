@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { filterFns } from "@tanstack/react-table";
 
 const employeColumns = [
   {
@@ -36,13 +37,26 @@ const employeColumns = [
   },
   {
     accessorKey: "id",
-    header: "Id",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="text-[#070F2B]"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Id
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    filterFn: "equalsString",
     cell: ({ row }) => (
       <div className="text-[#070F2B]">{row.getValue("id")}</div>
     ),
   },
   {
     accessorKey: "name",
+    filterFn: "includesString",
     header: ({ column }) => {
       return (
         <Button
@@ -59,6 +73,7 @@ const employeColumns = [
   },
   {
     accessorKey: "email",
+    filterFn: "includesString",
     header: ({ column }) => {
       return (
         <Button
@@ -76,6 +91,7 @@ const employeColumns = [
   {
     accessorKey: "department",
     header: "Department",
+    filterFn: "includesString",
     cell: ({ row }) => (
       <div className="lowercase">{row.getValue("department")}</div>
     ),

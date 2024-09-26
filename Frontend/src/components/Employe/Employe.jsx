@@ -34,15 +34,28 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 import employees from "../../fakedata/employe";
 import employeColumns from "../../employeColumns";
+import AddEmploye from "../AddEmploye";
 const Employe = () => {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
   const [loading, setLoading] = useState(true);
+  const [employeesData, setEmployeesData] = useState(employees); // State for employees
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [searchName, setSearchName] = useState("name");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchData = () => {
@@ -51,19 +64,43 @@ const Employe = () => {
       }, 2000);
     };
     fetchData();
-  });
+  }, []);
 
-  const handleClick = ({ data }) => {
-    const newEmployees = () => {
-      employees.unshift(data);
-      console.log(employees);
-      
-    };
-    newEmployees();
+  const handleOpenDialog = () => setIsDialogOpen(true);
+  const handleCloseDialog = () => setIsDialogOpen(false);
+
+  const handleSearchQuery = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    if (!value) {
+      table.getColumn("name")?.setFilterValue("");
+      table.getColumn("email")?.setFilterValue("");
+      table.getColumn("id")?.setFilterValue("");
+      table.getColumn("department")?.setFilterValue("");
+      return;
+    }
+
+    // Set the filter based on the selected search criteria
+    if (searchName) {
+      // If searching by ID, keep the full number
+      if (searchName === "id") {
+        table.getColumn(searchName)?.setFilterValue(value);
+      } else {
+        // For name, email, and department, you might want a partial match
+        table.getColumn(searchName)?.setFilterValue(value);
+      }
+    }
+  };
+
+  // new
+  const handleAddEmployee = (newEmployee) => {
+    setEmployeesData((prevEmployees) => [newEmployee, ...prevEmployees]);
   };
 
   const table = useReactTable({
-    data: loading ? [] : employees,
+    // data: loading ? [] : employees,
+    data: loading ? [] : employeesData,
     columns: employeColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -85,22 +122,43 @@ const Employe = () => {
     <div className="w-full h-[90%] bg-white my-4 rounded-md shadow-md px-4  flex justify-center">
       <div className="w-full">
         <div className="flex justify-between items-center py-4">
-          <Input
-            placeholder="Filter name..."
-            value={table.getColumn("name")?.getFilterValue() ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm focus:outline-none"
-          />
-          <div className="flex gap-2 justify-between">
-            <Button
-              variant="outline"
-              onClick={handleClick}
-              className="ml-auto bg-[#070F2B] text-white flex gap-1 items-center"
+          <div className="flex  gap-1">
+            <Input
+              placeholder="Search by Name, Email, ID, Department..."
+              value={searchQuery}
+              onChange={handleSearchQuery}
+              className="max-w-sm focus:outline-none"
+            />
+            <Select
+              className="focus:outline-none"
+              value={searchName}
+              onValueChange={(value) => setSearchName(value)}
             >
-              Add <IoMdAdd className="text-lg font-bold" />
-            </Button>
+              <SelectTrigger className="w-[180px] focus:outline-none ">
+                <SelectValue placeholder="Search by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="id">ID</SelectItem>
+                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="email">Email</SelectItem>
+                <SelectItem value="department">Department</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex gap-2 justify-between">
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" onClick={handleOpenDialog}>
+                  Add{" "}
+                  <IoMdAdd className="text-lg font-bold flex gap-1 items-center" />
+                </Button>
+              </DialogTrigger>
+              <AddEmploye
+                onAddEmployee={handleAddEmployee}
+                onClose={handleCloseDialog}
+              />
+            </Dialog>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
