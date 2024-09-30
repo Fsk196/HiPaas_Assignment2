@@ -3,11 +3,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose, IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { sidebarItems } from "../fakedata/sidebarItem";
+import { adminItem } from "../fakedata/adminItem";
 import { BiLogOut } from "react-icons/bi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../store/authSlice";
 
 const Sidebar = () => {
+  const { role } = useSelector((state) => state.auth);
   const [sidebarToggler, setSidebarToggler] = useState(false);
   const dispatch = useDispatch();
 
@@ -63,23 +65,49 @@ const Sidebar = () => {
         {/* Sidebar menu  items */}
         <div className="w-full px-8">
           <div className="border-t border-[#9290C3] border-b py-8 text-[#9290C3] flex flex-col gap-6">
-            {sidebarItems.map((item, id) => (
-              <div key={id}>
-                <Link
-                  to={item.path}
-                  className={`flex gap-2 text-xl items-center ${
-                    sidebarToggler ? "justify-center" : ""
-                  }`}
-                >
-                  <div className="">
-                    {React.createElement(item.icon, { className: "text-2xl" })}
+            {role === "admin"
+              ? adminItem.map((item, id) => (
+                  <div key={id}>
+                    <Link
+                      to={item.path}
+                      className={`flex gap-2 text-xl items-center ${
+                        sidebarToggler ? "justify-center" : ""
+                      }`}
+                    >
+                      <div>
+                        {React.createElement(item.icon, {
+                          className: "text-2xl",
+                        })}
+                      </div>
+                      {!sidebarToggler && (
+                        <div className="sidebarItem font-medium">
+                          {item.title}
+                        </div>
+                      )}
+                    </Link>
                   </div>
-                  {!sidebarToggler && (
-                    <div className="sidebarItem font-medium">{item.title}</div>
-                  )}
-                </Link>
-              </div>
-            ))}
+                ))
+              : sidebarItems.map((item, id) => (
+                  <div key={id}>
+                    <Link
+                      to={item.path}
+                      className={`flex gap-2 text-xl items-center ${
+                        sidebarToggler ? "justify-center" : ""
+                      }`}
+                    >
+                      <div>
+                        {React.createElement(item.icon, {
+                          className: "text-2xl",
+                        })}
+                      </div>
+                      {!sidebarToggler && (
+                        <div className="sidebarItem font-medium">
+                          {item.title}
+                        </div>
+                      )}
+                    </Link>
+                  </div>
+                ))}
           </div>
         </div>
 

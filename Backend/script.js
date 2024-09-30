@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import cors from "cors";
+import SpeedTest from "fast-speedtest-api";
 
 dotenv.config();
 
@@ -27,6 +28,21 @@ db.connect((err) => {
     console.log(err);
   } else {
     console.log("MySQL connected");
+  }
+});
+
+app.get("/speedtest", async (req, res) => {
+  const speedTest = new SpeedTest({
+    acceptLicense: true,
+    acceptGdpr: true,
+    token: "YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm",
+  });
+
+  try {
+    const speed = await speedTest.getSpeed();
+    res.json({ speed });
+  } catch (error) {
+    res.status(500).json({ error: "Please check your internet connection" });
   }
 });
 
@@ -106,6 +122,29 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     console.error("Database error:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/fetchdata", async (req, res) => {
+  try {
+    const [rows] = await db.promise().query("Select * from users;");
+
+    const formattedUsers = rows.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      companyname: user.companyname,
+      age: user.age,
+    }));
+
+    res.status(200).json({
+      message: "Data fetched successfully",
+      users: formattedUsers,
+    });
+  } catch (error) {
+    console.log("Database Fetch Error: ", error);
+    res.status(500).json({ message: "Error fetching data" });
   }
 });
 

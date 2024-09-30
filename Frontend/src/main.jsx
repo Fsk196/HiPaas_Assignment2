@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Layout from "./Layout.jsx";
 import {
+  Admin,
   Dashboard,
   Transaction,
   Note,
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
         }
       >
         <Route path="/" element={<Dashboard />} />
+        <Route path="admin" element={<Admin />} />
         <Route path="transaction" element={<Transaction />} />
         <Route path="note" element={<Note />} />
         <Route path="inventory" element={<Inventory />} />
