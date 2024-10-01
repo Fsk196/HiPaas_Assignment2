@@ -1,28 +1,89 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { responses, getResponse } from "../../chatResponse";
+import { context } from "../../chatResponse";
 
 const Chat = () => {
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Hello this is your personal assistant." },
+    { sender: "bot", text: "Hello, this is your personal assistant." },
   ]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSend = () => {
+  console.log(import.meta.env.VITE_GEMINI_KEY);
+
+  const handleSend = async () => {
     if (!input.trim()) return; // Prevent empty messages
 
     // Add user message to chat
     const userMessage = { text: input, isUser: true };
     setMessages((prev) => [...prev, userMessage]);
 
-    // Get response based on input
-    const botResponse = getResponse(input);
-    const botMessage = { text: botResponse, isUser: false };
-    setMessages((prev) => [...prev, botMessage]);
+    // Set loading state
+    setIsLoading(true);
 
-    // Clear input
-    setInput("");
+    try {
+      // Prepare the request body
+      const requestBody = {
+        contents: [
+          {
+            parts: [
+              {
+                text: `${context}\nUser: ${input}\nAssistant (provide a short response):`,
+              },
+            ],
+          },
+        ],
+      };
+
+      console.log("Request Body:", JSON.stringify(requestBody, null, 2)); // Debugging log
+
+      // Call the Gemini API with context
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${
+          import.meta.env.VITE_GEMINI_KEY
+        }`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      // Check if response is ok
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("API Error:", errorData);
+        throw new Error("Failed to fetch from API");
+      }
+
+      const data = await response.json();
+      console.log("API Response:", data); // Debugging log
+
+      const botMessage = {
+        text:
+          data.candidates && data.candidates.length > 0
+            ? data.candidates[0].content.parts[0].text.trim()
+            : "Sorry, I didn't understand that.",
+        isUser: false,
+      };
+
+      // Add bot response to chat
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error("Error fetching response from Gemini API:", error);
+      const errorMessage = {
+        text: "Sorry, something went wrong. Please try again later.",
+        isUser: false,
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      // Clear input and reset loading state
+      setInput("");
+      setIsLoading(false); // Reset loading state
+    }
   };
 
   return (
@@ -45,13 +106,21 @@ const Chat = () => {
                 key={index}
                 className={`w-full h-fit flex ${
                   msg.isUser ? "justify-end" : "justify-start"
-                }  transition-opacity duration-200 ease-in-out delay-100 animate-fadeIn`}
+                } transition-opacity duration-200 ease-in-out delay-100 animate-fadeIn`}
               >
                 <div
-                  className={`w-fit max-w-[60%] h-fit px-4 py-2 flex items-center gap-4 rounded-lg border-2`}
+                  className={`w-fit max-w-[60%] h-fit px-4 py-2 flex items-center shadow-md gap-4 rounded-lg border-2`}
                 >
                   {msg.isUser ? (
-                    <h2>{msg.text}</h2>
+                    <>
+                      <h2>{msg.text}</h2>
+                      <img
+                        src="/src/assets/user.png"
+                        width={28}
+                        height={28}
+                        alt="user"
+                      />
+                    </>
                   ) : (
                     <>
                       <img
@@ -66,6 +135,19 @@ const Chat = () => {
                 </div>
               </div>
             ))}
+            {/* Show loading message when fetching response */}
+            {isLoading && (
+              <div className="w-fit max-w-[60%] h-fit px-4 py-2 flex flex-row items-center shadow-md gap-4 rounded-lg border-2">
+                <img
+                  src="/src/assets/hipaaslogo.svg"
+                  width={25}
+                  height={25}
+                  alt="user"
+                />
+                <h2>Generating</h2>
+                <div className="w-5 h-5 rounded-full border-2 animate-spin border-l-gray-900 border-t-gray-700 border-r-gray-600 border-b-gray-300 "></div>
+              </div>
+            )}
           </div>
         </div>
         <div className="w-full h-[11%] bg-gray-100 rounded-lg shadow-lg flex items-center px-4 py-2 gap-2">

@@ -1,16 +1,23 @@
 export const getResponse = (input) => {
-    const lowerCaseInput = input.toLowerCase();
-    
-    // Check for keywords in the user input and return the corresponding response
-    for (const key in responses) {
-      if (lowerCaseInput.includes(key)) {
-        return responses[key];
-      }
+  const lowerCaseInput = input.toLowerCase();
+
+  // Check for keywords in the user input and return the corresponding response
+  for (const key in responses) {
+    if (lowerCaseInput.includes(key)) {
+      return responses[key];
     }
-    
-    // Fallback response
-    return "I'm sorry, I didn't quite understand that. Can you please rephrase?";
-  };
+  }
+
+  // Fallback response
+  return "I'm sorry, I didn't quite understand that. Can you please rephrase?";
+};
+
+export const context = `
+DealerPaaS is an AI-powered platform designed for auto dealerships. 
+It helps manage sales order processing, vehicle inventory, CRM, service operations, accounting, integration with OEM systems, and spare parts management. 
+The solution aims to streamline dealership operations, improve customer interactions, and ensure compliance with financial regulations. 
+Key features include sales order management, customer relationship management, service scheduling, financial tracking, and parts inventory management.
+`;
 
 export const responses = {
   "what is dealerpaas?":
@@ -90,4 +97,67 @@ export const responses = {
 
   "is dealerpaas suitable for small dealerships?":
     "Yes, DealerPaaS is designed to scale with your business and can benefit dealerships of all sizes by streamlining operations.",
+
+  "how do i get started with dealerpaas?":
+    "To get started with DealerPaaS, you can sign up for a demo, contact our sales team, or visit our website for more information.",
+
+  "what kind of training does dealerpaas offer?":
+    "DealerPaaS provides comprehensive training programs, including online resources, webinars, and one-on-one training sessions to help users maximize the platform's potential.",
+
+  "can dealerpaas help with lead management?":
+    "Yes, DealerPaaS offers lead management features that allow you to capture, track, and nurture leads effectively to boost sales.",
+
+  "how does dealerpaas handle customer support?":
+    "DealerPaaS provides 24/7 customer support through various channels, including phone, email, and live chat, to assist users with any issues.",
+
+  "is dealerpaas customizable?":
+    "Yes, DealerPaaS is highly customizable, allowing you to tailor the platform to meet your specific business needs and processes.",
+
+  "how can i analyze sales performance with dealerpaas?":
+    "You can analyze sales performance using the reporting tools in DealerPaaS, which provide insights into sales trends, team performance, and overall profitability.",
+
+  "what mobile features does dealerpaas offer?":
+    "DealerPaaS offers mobile-friendly features, allowing you to manage operations, access reports, and communicate with customers on the go.",
+
+  "how does dealerpaas support multi-location dealerships?":
+    "DealerPaaS is designed to support multi-location dealerships by providing centralized management tools, inventory control, and reporting across all locations.",
+
+  "can i access dealerpaas from anywhere?":
+    "Yes, DealerPaaS is cloud-based, allowing you to access the platform from any device with an internet connection.",
+
+  "what integrations does dealerpaas offer?":
+    "DealerPaaS offers integrations with various third-party applications, including CRM, accounting, and inventory management systems, to streamline your operations.",
+
+  "how can i improve online sales with dealerpaas?":
+    "You can enhance online sales through targeted marketing campaigns, an optimized website, and leveraging analytics to understand customer behavior.",
+
+  "what tools does dealerpaas provide for customer communication?":
+    "DealerPaaS provides communication tools such as email templates, SMS notifications, and automated follow-up reminders to enhance customer interaction.",
+
+  "how does dealerpaas help with trade-ins?":
+    "DealerPaaS facilitates trade-in management by assessing vehicle values, processing trade-in agreements, and ensuring a seamless transaction for customers.",
+
+  "can dealerpaas manage leasing options?":
+    "Yes, DealerPaaS includes features for managing leasing options, helping you present different plans to customers and handle leasing agreements efficiently.",
+
+  "what are the best practices for using dealerpaas effectively?":
+    "Best practices include regular training, leveraging analytics for decision-making, maintaining accurate data, and optimizing communication with customers.",
+
+  "how can dealerpaas assist in improving service efficiency?":
+    "DealerPaaS assists in improving service efficiency through automated scheduling, real-time tracking of service status, and streamlined communication with customers.",
+
+  "can dealerpaas generate invoices?":
+    "Yes, DealerPaaS can automatically generate invoices for sales, services, and parts transactions, ensuring accuracy and compliance with financial regulations.",
+
+  "how does dealerpaas help with market analysis?":
+    "DealerPaaS provides analytics tools that help you analyze market trends, customer preferences, and sales data to make informed business decisions.",
+
+  "what security measures does dealerpaas implement?":
+    "DealerPaaS implements multiple security measures, including data encryption, regular backups, and access controls to protect sensitive information.",
+
+  "how can i customize reports in dealerpaas?":
+    "You can customize reports in DealerPaaS by selecting specific metrics, date ranges, and data sources to generate tailored insights for your dealership.",
+
+  "does dealerpaas offer performance tracking for marketing campaigns?":
+    "Yes, DealerPaaS provides tools to track the performance of marketing campaigns, allowing you to analyze ROI and optimize future strategies.",
 };
