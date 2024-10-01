@@ -58,12 +58,14 @@ export const sidebarItems = [
 
 export const getTitle = (location) => {
   switch (location.pathname) {
+    case "/admin":
+      return "Admin";
     case "/transaction":
       return "Transaction";
     case "/note":
       return "Note";
     case "/employe":
-      return "Employe";
+      return "Employee";
     case "/inventory":
       return "Inventory";
     case "/report":

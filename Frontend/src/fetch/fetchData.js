@@ -30,3 +30,19 @@ export const speedTest = new FastSpeedtest({
     token: "YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm",
   });
 
+export const getAllNotes = async () => {
+  try {
+    const response = await fetch("http://localhost:3000/notes", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    
+  }
+}

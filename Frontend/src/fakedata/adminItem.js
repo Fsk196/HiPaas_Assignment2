@@ -56,31 +56,10 @@ export const adminItem = [
   },
   {
     id: 9,
-    title: "Employe",
+    title: "Employee",
     path: "/employe",
     icon: BiSolidUserBadge,
   },
 ];
 
-export const getTitle = (location) => {
-  switch (location.pathname) {
-    case "/transaction":
-      return "Transaction";
-    case "/note":
-      return "Note";
-    case "/employe":
-      return "Employe";
-    case "/inventory":
-      return "Inventory";
-    case "/report":
-      return "Report";
-    case "/setting":
-      return "Setting";
-    case "/chat":
-      return "Chat";
-    case "/admin":
-      return "Admin";
-    default:
-      return "Dashboard";
-  }
-};
+

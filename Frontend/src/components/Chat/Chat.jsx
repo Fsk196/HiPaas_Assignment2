@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { context } from "../../chatResponse";
+import ReactMarkdown from "react-markdown";
 
 const Chat = () => {
   const [messages, setMessages] = useState([
@@ -9,6 +10,7 @@ const Chat = () => {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const chatEndRef = useRef(null);
 
   console.log(import.meta.env.VITE_GEMINI_KEY);
 
@@ -86,6 +88,12 @@ const Chat = () => {
     }
   };
 
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <>
       <div className="w-full h-[90%] bg-white my-4 rounded-md shadow-md px-4 flex flex-col">
@@ -129,7 +137,7 @@ const Chat = () => {
                         height={25}
                         alt="user"
                       />
-                      <h2>{msg.text}</h2>
+                      <ReactMarkdown className="flex flex-col">{msg.text}</ReactMarkdown>
                     </>
                   )}
                 </div>
@@ -148,6 +156,7 @@ const Chat = () => {
                 <div className="w-5 h-5 rounded-full border-2 animate-spin border-l-gray-900 border-t-gray-700 border-r-gray-600 border-b-gray-300 "></div>
               </div>
             )}
+            <div ref={chatEndRef} />
           </div>
         </div>
         <div className="w-full h-[11%] bg-gray-100 rounded-lg shadow-lg flex items-center px-4 py-2 gap-2">

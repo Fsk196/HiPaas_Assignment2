@@ -8,10 +8,14 @@ const Navbar = () => {
   const [title, setTitle] = useState("");
 
   const location = useLocation();
+  console.log(location.pathname);
+  
   
   useEffect(() => {
     const newTitle = getTitle(location);
     setTitle(newTitle);
+    console.log(newTitle);
+    
   }, [location]);
   return (
     <>

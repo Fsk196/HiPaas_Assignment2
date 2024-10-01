@@ -32,10 +32,12 @@ db.connect((err) => {
 });
 
 app.get("/speedtest", async (req, res) => {
+  const token = process.env.TOKEN;
+
   const speedTest = new SpeedTest({
     acceptLicense: true,
     acceptGdpr: true,
-    token: "YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm",
+    token: token,
   });
 
   try {
@@ -148,6 +150,139 @@ app.get("/fetchdata", async (req, res) => {
   }
 });
 
+app.get("/notes", async (req, res) => {
+  try {
+    const [rows] = await db.promise().query("Select * from notes;");
+
+    const formattedNotes = rows.map((note) => ({
+      id: note.id,
+      title: note.title,
+      createTime: note.createTime,
+      content: note.content,
+      badge: note.badge,
+      status: note.status,
+      user_id: note.user_id,
+    }));
+    res.status(200).json({
+      message: "Notes fetched successfully.",
+      notes: formattedNotes,
+    });
+  } catch (error) {
+    console.log("Error in fetching notes: ", error);
+    res.status(500).json({ message: "Error fetching Notes." });
+  }
+});
+
+app.get("/notes/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await db
+      .promise()
+      .query("Select * from notes where user_id = ?", [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Note not found." });
+    }
+
+    const formattedNotes = rows.map((note) => ({
+      id: note.id,
+      title: note.title,
+      createTime: note.createTime,
+      content: note.content,
+      badge: note.badge,
+      status: note.status,
+      user_id: note.user_id,
+    }));
+
+    res.status(200).json({
+      message: "Note fetched successfully.",
+      notes: formattedNotes,
+    });
+  } catch (error) {
+    console.log("Error in fetching note: ", error);
+    res.status(500).json({ message: "Error fetching Note." });
+  }
+});
+
+app.post("/updatenote", async (req, res) => {
+  const { id, title, content, badge, status } = req.body;
+
+  try {
+    const [rows] = await db
+      .promise()
+      .query(
+        "Update notes set title = ?, content = ?, badge = ?, status = ? where id = ?",
+        [title, content, badge, status, id]
+      );
+
+    if (rows.affectedRows === 0) {
+      return res.status(404).json({ message: "Note not found." });
+    }
+
+    res.status(200).json({
+      message: "Note updated successfully.",
+      note: {
+        id,
+        title,
+        content,
+        badge,
+        status,
+      },
+    });
+  } catch (error) {
+    console.log("Error in updating note: ", error);
+    res.status(500).json({ message: "Error updating Note." });
+  }
+});
+
+app.post("/addnotes", async (req, res) => {
+  const { title, content, badge, status, user_id } = req.body;
+
+  try {
+    const [rows] = await db
+      .promise()
+      .query(
+        "Insert into notes (title, content, badge, status, user_id) values (?, ?, ?, ?, ?)",
+        [title, content, badge, status, user_id]
+      );
+
+    res.status(201).json({
+      message: "Note created successfully.",
+      note: {
+        id: rows.insertId,
+        title,
+        content,
+        badge,
+        status,
+        user_id,
+      },
+    });
+  } catch (error) {
+    console.log("Error in creating note: ", error);
+    res.status(500).json({ message: "Error creating Note." });
+  }
+});
+
+app.post("/deletenote", async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const [rows] = await db
+      .promise()
+      .query("Delete from notes where id = ?", [id]);
+
+    if (rows.affectedRows === 0) {
+      return res.status(404).json({ message: "Note not found." });
+    }
+
+    res.status(200).json({ message: "Note deleted successfully." });
+  } catch (error) {
+    console.log("Error in deleting note: ", error);
+    res.status(500).json({ message: "Error deleting Note." });
+  }
+});
+
 app.post("/verify-token", (req, res) => {
   const token = req.headers.authorization?.split(" ")[1]; // Extract the token
 
@@ -157,7 +292,7 @@ app.post("/verify-token", (req, res) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET); // Verify the token
-    console.log("Decoded token: ", decoded);
+    // console.log("Decoded token: ", decoded);
 
     // Fetch user from DB based on decoded email
     db.promise()
