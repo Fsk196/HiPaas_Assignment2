@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllUserData, speedTest } from "../../fetch/fetchData";
-import {
-  ChevronDownIcon,
-} from "@radix-ui/react-icons";
+import { fetchAllUserData } from "../../fetch/fetchData";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import {
   flexRender,
   getCoreRowModel,
@@ -13,13 +11,16 @@ import {
 } from "@tanstack/react-table";
 
 import { Button } from "../../components/ui/button";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
+
 import { Input } from "../../components/ui/input";
+
 import {
   Table,
   TableBody,
@@ -36,8 +37,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import adminColumns from "../AdminColumn";
-import SpeedTest from "fast-speedtest-api";
-// token: "YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm",
 
 const Admin = () => {
   const [data, setData] = useState(null);
@@ -78,12 +77,11 @@ const Admin = () => {
     };
 
     fetchSpeedTest();
-  }, [speed]);
+  }, []);
 
   const handleSearchQuery = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
-
     if (!value) {
       table.getColumn("name")?.setFilterValue("");
       table.getColumn("email")?.setFilterValue("");
@@ -92,7 +90,6 @@ const Admin = () => {
       table.getColumn("companyname")?.setFilterValue("");
       return;
     }
-
     // Set the filter based on the selected search criteria
     if (searchName) {
       // If searching by ID, keep the full number
@@ -165,9 +162,10 @@ const Admin = () => {
                     <SelectValue placeholder="Search by" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="id">ID</SelectItem>
+                    <SelectItem value="id">Id</SelectItem>
                     <SelectItem value="name">Name</SelectItem>
                     <SelectItem value="email">Email</SelectItem>
+                    <SelectItem value="role">Role</SelectItem>
                     <SelectItem value="companyname">Company Name</SelectItem>
                   </SelectContent>
                 </Select>

@@ -99,7 +99,6 @@ const Employe = () => {
   };
 
   const table = useReactTable({
-    // data: loading ? [] : employees,
     data: loading ? [] : employeesData,
     columns: employeColumns,
     onSortingChange: setSorting,

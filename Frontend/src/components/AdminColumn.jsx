@@ -37,6 +37,7 @@ const adminColumns = [
   {
     accessorKey: "id",
     header: "Id",
+    filterFn: "equalsString",
     cell: ({ row }) => (
       <div className="text-[#070F2B]">{row.getValue("id")}</div>
     ),
