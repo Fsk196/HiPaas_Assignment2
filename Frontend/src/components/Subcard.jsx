@@ -23,7 +23,7 @@ const Subcard = ({ title, icon, children, onClick, btnName }) => {
           </div>
           <button
             onClick={handleClick}
-            className="bg-transparent border border-[#E9E9E9] text-black hover:text-white hover:bg-violet-500 px-3 py-1 rounded-lg"
+            className="bg-transparent border bg-[#070F2B] hover:bg-[#070F2B]/90 text-black hover:text-white  px-3 py-1 rounded-lg"
           >
             {btnName ? btnName : "See All"}
           </button>

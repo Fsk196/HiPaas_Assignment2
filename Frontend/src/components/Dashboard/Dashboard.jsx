@@ -59,7 +59,7 @@ const Dashboard = () => {
             </p>
             <Link
               to="/transaction"
-              className="w-full mt-3 bg-violet-900 text-center text-white py-2 rounded-md"
+              className="w-full mt-3 bg-[#070F2B] hover:bg-[#070F2B]/90 text-center text-white py-2 rounded-md"
             >
               View Full Transaction
             </Link>

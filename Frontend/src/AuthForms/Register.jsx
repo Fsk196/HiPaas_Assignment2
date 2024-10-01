@@ -92,10 +92,11 @@ const Register = () => {
   return (
     <>
       <div className="relative flex w-full h-screen flex-row bg-white text-white">
-        <div className="relative bg-[#005BD2] w-[80%] mx-2 my-2 rounded-lg hidden lg:block">
-          <h1 className="text-3xl absolute top-12 left-5 font-medium">
-            HiPaaS
-          </h1>
+        <div className="relative bg-[#070F2B] w-[80%] mx-2 my-2 rounded-lg hidden lg:block">
+          <div className="text-3xl absolute top-12 left-5 font-medium flex gap-2 items-center">
+            <img src="/src/assets/hipaaslogo.svg" alt="logo" />
+            <h2>HiPaaS</h2>
+          </div>
 
           <div className="absolute top-1/3 left-5">
             <h2 className="text-5xl font-semibold">Start Your</h2>
@@ -323,7 +324,9 @@ const Register = () => {
                   )}
 
                   {userExist && (
-                    <div className="text-xl text-red-600 mb-4 text-center">Email already exists please use different email</div>
+                    <div className="text-xl text-red-600 mb-4 text-center">
+                      Email already exists please use different email
+                    </div>
                   )}
 
                   <div className="w-full flex justify-between items-center">
@@ -340,7 +343,7 @@ const Register = () => {
                     {currentStep < 3 && (
                       <button
                         type="button"
-                        className="bg-blue-500 text-white py-2 px-4 rounded"
+                        className="bg-[#070F2B] hover:bg-[#070F2B]/80 text-white py-2 px-4 rounded"
                         onClick={handleNext}
                       >
                         Next
@@ -350,7 +353,7 @@ const Register = () => {
                     {currentStep === 3 && (
                       <button
                         onSubmit={handleSubmit(onSubmit)}
-                        className="bg-blue-500 text-white py-2 px-4 rounded"
+                        className="bg-[#070F2B] text-white py-2 px-4 rounded"
                         type="submit"
                       >
                         Submit
@@ -361,7 +364,7 @@ const Register = () => {
               </div>
 
               <div className="w-full text-center">
-                <Link to="/login" className="my-4 text-[#005BD2]">
+                <Link to="/login" className="my-4 text-[#070F2B]">
                   Already have an account?
                 </Link>
               </div>

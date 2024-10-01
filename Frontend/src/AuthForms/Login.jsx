@@ -68,10 +68,11 @@ const Login = () => {
   return (
     <>
       <div className="text-white w-full flex  h-screen bg-white">
-        <div className="relative bg-[#005BD2] md:w-[80%] sm:w-[80%]  mx-2 my-2 rounded-lg hidden sm:block px-4">
-          <h1 className="text-3xl absolute top-12 left-5 font-medium">
-            HiPaaS
-          </h1>
+        <div className="relative bg-[#070F2B] md:w-[80%] sm:w-[80%]  mx-2 my-2 rounded-lg hidden sm:block px-4">
+          <div className="text-3xl absolute top-12 left-5 font-medium flex gap-2 items-center">
+            <img src="/src/assets/hipaaslogo.svg" alt="logo" />
+            <h2>HiPaaS</h2>
+          </div>
 
           <div className="absolute top-1/3 left-5">
             <h2 className="text-5xl font-semibold">Welcome back</h2>
@@ -145,18 +146,18 @@ const Login = () => {
                 </p>
               </div>
               {loading ? (
-                <button className="bg-[#005BD2] text-xl py-2 px-4 rounded-md w-full hover:bg-[#005BD2]/90 shadow-lg flex gap-2 justify-center items-center">
+                <button className="bg-[#070F2B] text-xl py-2 px-4 rounded-md w-full hover:bg-[#070F2B]/90 shadow-lg flex gap-2 justify-center items-center">
                   <h2>Login</h2>
                   <div className="animate-spin w-5 h-5 border-2 rounded-full border-r-gray-300 border-b-gray-400 border-l-gray-600 border-t-gray-900 "></div>
                 </button>
               ) : (
-                <button className="bg-[#005BD2] text-xl py-2 px-4 rounded-md w-full hover:bg-[#005BD2]/90 shadow-lg">
+                <button className="bg-[#070F2B] text-xl py-2 px-4 rounded-md w-full hover:bg-[#070F2B]/90 shadow-lg">
                   Login
                 </button>
               )}
             </form>
             <div className="w-full text-center my-4">
-              <Link to="/register" className="text-[#005BD2] ">
+              <Link to="/register" className="text-[#070F2B] ">
                 Don't have an account?
               </Link>
             </div>
