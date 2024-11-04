@@ -26,7 +26,7 @@ const Sidebar = () => {
     <>
       <div
         id="sidebar"
-        className={`sidebar relative bg-[#070F2B] h-full transition-all duration-300 ${
+        className={`sidebar relative bg-[#070F2B] h-full  transition-all duration-300 ${
           sidebarToggler ? "w-[100px]" : "w-[300px]"
         }`}
       >

@@ -13,9 +13,10 @@ export const getResponse = (input) => {
 };
 
 export const context = `
-DealerPaaS is an AI-powered platform designed for auto dealerships. 
-It helps manage sales order processing, vehicle inventory, CRM, service operations, accounting, integration with OEM systems, and spare parts management. 
-The solution aims to streamline dealership operations, improve customer interactions, and ensure compliance with financial regulations. 
+The Vehicle Sale Module streamlines the entire sales process, starting with a comprehensive Sales Dashboard that displays key metrics like today's follow-ups, open enquiries, pending money receipts, chassis pending for Pre-Delivery Inspection (PDI), chassis available for allocation, vehicle stock, and sales. The process begins with creating an enquiry by entering customer, model, and accessory details, followed by generating a quotation. Once confirmed, the user proceeds to Vehicle Booking, where booking details, rates, discounts, and selected accessories are finalized. The system allows modification until booking is confirmed, after which no edits are allowed. After booking, payments are recorded in the Money Received section, where users create a money receipt and allocate a chassis to the customer. Finally, the allocated chassis becomes available for Vehicle Invoicing. At this stage, users can generate and print necessary documents, such as the tax invoice, gate pass, delivery challan, and forms required for the vehicle's delivery. Throughout the process, users have options to view and edit details before final confirmation at each stage, ensuring accurate and flexible management of vehicle sales.
+DealerPaaS is an AI-powered platform designed for auto dealerships.
+It helps manage sales order processing, vehicle inventory, CRM, service operations, accounting, integration with OEM systems, and spare parts management.
+The solution aims to streamline dealership operations, improve customer interactions, and ensure compliance with financial regulations.
 Key features include sales order management, customer relationship management, service scheduling, financial tracking, and parts inventory management.
 `;
 

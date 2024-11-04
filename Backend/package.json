@@ -1,5 +1,9 @@
 {
   "type": "module",
+  "scripts": {
+    "start": "node script.js",
+    "dev": "nodemon script.js"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",

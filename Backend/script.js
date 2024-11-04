@@ -76,7 +76,14 @@ app.post("/register", async (req, res) => {
     res.status(201).json({
       message: "User registered successfully",
       token,
-      user: { name, email, role, companyname, age },
+      user: {
+        userId: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        companyname: user.companyname,
+        age: user.age,
+      },
     });
   } catch (error) {
     console.error("Database error:", error);
@@ -101,6 +108,8 @@ app.post("/login", async (req, res) => {
     }
 
     const user = rows[0];
+    console.log(user);
+    
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -114,6 +123,7 @@ app.post("/login", async (req, res) => {
       message: "Login successful",
       token,
       user: {
+        userId: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -306,6 +316,7 @@ app.post("/verify-token", (req, res) => {
         res.status(200).json({
           message: "Token verified",
           user: {
+            userId: user.id,
             name: user.name,
             email: user.email,
             role: user.role,
